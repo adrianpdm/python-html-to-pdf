@@ -15,8 +15,8 @@ def parse_html(request: Request, file_name: str, context: Dict):
 class Context(BaseModel):
     context: Dict
 
-@app.post('/pdf')
-async def generate_pdf(
+@app.post('/print')
+async def print(
    request: Request,
    body: Dict = Body(...)
 ):
