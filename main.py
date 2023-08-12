@@ -21,7 +21,7 @@ class PrintPayload(BaseModel):
     type: PrintType
     format: PrintFormat
     context: Dict = {}
-    filename: Optional[str] = None
+    filename: str
 
 @app.post("/print")
 async def handle_print(
@@ -39,6 +39,7 @@ async def handle_print(
 
         html_content = template_file.render({
             'request': request,
+            'filename': body.filename,
             **context,
         })
         
