@@ -1,4 +1,4 @@
-from typing import Union, Dict
+from typing import Union, Dict, Optional
 from pydantic import BaseModel
 import uvicorn
 from enum import Enum
@@ -20,8 +20,8 @@ class PrintFormat(str, Enum):
 class PrintPayload(BaseModel):
     type: PrintType
     format: PrintFormat
-    filename: str
     context: Dict = {}
+    filename: Optional[str] = None
 
 @app.post("/print")
 async def handle_print(
