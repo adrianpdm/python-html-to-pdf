@@ -1,0 +1,83 @@
+<style>
+  .w-full {
+    width: 100% !important;
+  }
+
+  .text-h7 {
+    font-size: 0.9375rem;
+    font-weight: 400;
+    line-height: 1.4375rem;
+    letter-spacing: 0em;
+    text-transform: false;
+  }
+
+  .app-icon__container {
+    border: 1px solid #EEEEEE;
+    padding: 0px;
+    border-radius: 20%;
+    overflow: hidden;
+  }
+</style>
+<footer class="w-full">
+  {% if footer and footer.show_download_app %}
+    <div class="w-full">
+      <div style="float: left;">
+        <div style="display: inline-block;">
+          <img 
+            src="https://wisata.app/img/logo/pwa-icon.png" 
+            alt="app_icon"
+            width="100px"
+            class="app-icon__container"
+            style="mix-blend-mode: multiply; object-fit: cover; object-position: center;"
+          >
+        </div>
+
+        <div style="display: inline-block; padding-left: 6px; vertical-align: top; padding-top: 10px">
+          <p style="font-size: 15px; padding-bottom: 8px; line-height: 1">
+            <strong>Wisata App</strong>
+          </p>
+
+          <p
+            style="padding-bottom: 8px; font-size: 14px; line-height: 1"
+          >
+            Get our app for the full experience
+          </p>
+          
+          <a href="https://play.google.com/store/apps/details?id=app.wisata" target="_blank">
+            <img 
+              src="https://wisata.app/img/google-play-badge.png" 
+              alt="google_play_badge"
+              width="100px"
+            >
+          </a>
+          <a href="https://apps.apple.com/id/app/wisata-app/id6447558976" target="_blank" style="margin-left: 4px;">
+            <img 
+              src="https://wisata.app/img/app-store-badge.png" 
+              alt="app_store_badge"
+              width="100px"
+            >
+          </a>
+        </div>
+      </div>
+      
+      <div style="float: right;">
+        <div style="display: inline-block; font-size: 16px; vertical-align: top; padding-top: 28px;">
+          <div style="text-align: right !important">
+            <p>
+              Scan QR
+            </p>
+            <p>
+              to install app
+            </p>
+          </div>
+        </div>
+        <img
+          style="display: inline-block; mix-blend-mode: multiply; margin-left: 6px;"
+          src="https://wisata.app/img/qr-code-app.svg" 
+          alt="qr_code_install_app"
+          width="90px"
+        >
+      </div>
+    </div>
+  {% endif %}
+</footer>

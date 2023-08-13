@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link type="text/css" href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <style>
+    html {
+      font-size: 14px !important;
+    }
+
+    p {
+      margin: 0 !important;
+    }
+
+    .leading-none {
+      line-height: 1 !important;
+    }
+    .leading-sm {
+      line-height: 1.25 !important;
+    }
+
+    .divider-h {
+      display: block;
+      border-top: 1px solid #ddd;
+      width: 100%;
+    }
+
+    .table-booking-details td:nth-child(2)::before {
+      content: ':';
+      margin: 0 1em;
+    }
+    .table-booking-details td:nth-child(2) {
+      font-weight: bold;
+    }
+
+    img.header-logo {
+      max-height: 72px;
+      max-width: 160px;
+    }
+
+    footer {
+      margin-top: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="v-application theme--light">
+    <div class="container text-body-2">
+      <header>
+        <p class="d-flex align-center mb-4 text-h5">
+          <strong>Hotel Voucher</strong>
+          <i class="spacer"></i>
+          {% if header.logo_src %}
+          <img
+            src="{{ header.logo_src }}"
+            class="header-logo"
+          >
+          {% endif %}
+        </p>
+
+        <section>
+          <p class="leading-sm text-subtitle-1">
+            <strong>{{ data.product_data.name_1 }}</strong>
+          </p>
+          <p>
+            {{ data.catalog_data.address }}
+          </p>
+          <p>
+            <span>Phone:</span>
+            <span>{{ data.catalog_data.phone }}</span>
+          </p>
+          <div
+            class="mt-2 d-flex"
+            style="gap: 2rem;"
+          >
+            <div>
+              <span class="text-caption">
+                VOUCHER ID
+              </span>
+              <p class="leading-sm text-subtitle-1">
+                <strong>{{ data.booking_id }}</strong>
+              </p>
+            </div>
+
+            <div>
+              <span class="text-caption">
+                RESERVED FOR
+              </span>
+              <p class="leading-sm text-subtitle-1">
+                <strong>{{ data.guest_order_data.guest_data.0.full_name }}</strong>
+              </p>
+            </div>
+
+            <div>
+              <span class="text-caption">
+                CHECK-IN
+              </span>
+              <p>
+                <span class="leading-sm text-subtitle-1">
+                  <strong>
+                    {{ udf_pretty_date(data.dates_data.start_date, include_year=True) }}
+                  </strong>
+                </span>
+                <br>
+                <span>@{{ data.important_info.checkin_time }}</span>
+              </p>
+            </div>
+
+            <div>
+              <span class="text-caption">
+                CHECK-OUT
+              </span>
+              <p>
+                <span class="leading-sm text-subtitle-1">
+                  <strong>
+                    {{ udf_pretty_date(data.dates_data.end_date, include_year=True) }}
+                  </strong>
+                </span>
+                
+                <br>
+                <span>@{{ data.important_info.checkout_time }}</span>
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          {% if data.supplier_ref_data and data.supplier_ref_data.Confirmation %}
+          <div>
+            <span class="text-caption">
+              CONFIRMATION
+            </span>
+            <p class="leading-sm text-subtitle-1">
+              <strong>{{ data.supplier_ref_data.Confirmation }}</strong>
+            </p>
+          </div>
+          {% endif %}
+
+          {% if data.supplier_ref_data and data.supplier_ref_data['Itinerary ID'] %}
+          <div>
+            <span class="text-caption">
+              ITINERARY ID
+            </span>
+            <p class="leading-sm text-subtitle-1">
+              <strong>{{ data.supplier_ref_data['Itinerary ID'] }}</strong>
+            </p>
+          </div>
+          {% endif %}
+        </section>
+      </header>
+
+      <main>
+        <i class="divider-h my-4"></i>
+        <p class="text-subtitle-1">
+          <strong>Booking Details</strong>
+        </p>
+
+        <table class="table-booking-details text-caption">
+          <tbody>
+            <tr>
+              <td>GUEST</td>
+              <td>{{ data.guest_order_data.guest_data[0].full_name }}</td>
+            </tr>
+            <tr>
+              <td>ROOM TYPE</td>
+              <td>{{ data.product_data.name_2 }}</td>
+            </tr>
+            <tr>
+              <td>NUMBER OF ROOMS</td>
+              <td>{{ data.quantity }}</td>
+            </tr>
+            <tr>
+              <td>GUEST PER ROOM</td>
+              <td>{{ data.product_data.name_3.guest_per_room }} person(s)</td>
+            </tr>
+            <tr>
+              <td>SPECIAL REQUEST</td>
+              <td>{{ data.guest_order_data.special_request }}</td>
+            </tr>
+            <tr>
+              <td colspan="3">
+                <br>
+                {% if (data.product_data.name_3.meal_plan_code != 'RO') %}
+                <span>
+                  🍽️ {{ data.product_data.name_3.meal_plan_description }}
+                </span>
+                {% endif %}
+
+                <span>
+                 🗒️ {{ data.product_data.name_3.cancel_policy_description }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <i class="divider-h my-4"></i>
+
+        <p class="text-subtitle-1 mb-3">
+          <strong>Important Information</strong>
+        </p>
+
+        {% if data.important_info.checkin_special_instruction %}
+        <p class="text-subtitle-2d">
+          <strong>Checkin Instruction</strong>
+        </p>
+        <p>
+          {{ data.important_info.checkin_special_instruction }}
+        </p>
+        {% endif %}
+
+        {% if data.important_info.mandatory_fees_description %}
+        <br>
+        <p class="text-subtitle-2d">
+          <strong>Mandatory Charges</strong>
+        </p>
+        <div>
+          {{ data.important_info.mandatory_fees_description|safe }}
+        </div>
+        {% endif %}
+
+        {% if data.important_info.checkin_info %}
+        <br>
+        <p class="text-subtitle-2d">
+          <strong>Additional Information</strong>
+        </p>
+        <div>
+          {{ data.important_info.checkin_info|safe }}
+        </div>
+        {% endif %}
+      </main>
+
+      {% include 'footer.html' %}
+    </div>
+  </div>
+
+</body>
+
+</html>
