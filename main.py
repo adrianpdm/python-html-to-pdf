@@ -69,7 +69,14 @@ async def handle_print(
                 )
                 page = await browser.new_page()
                 await page.set_content(html_content)
-                pdf_content = await page.pdf()
+                pdf_content = await page.pdf(
+                    margin={
+                        'top': '2cm',
+                        'right': '1cm',
+                        'bottom': '1cm',
+                        'left': '1cm',
+                    }
+                )
                 await browser.close()
 
             if (pdf_content != None):
