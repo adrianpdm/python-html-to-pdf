@@ -16,6 +16,7 @@ templates = Jinja2Templates(directory="templates")
 class PrintType(str, Enum):
     Debug = 'debug'
     StayVoucher = 'stay-voucher'
+    WisataBill = 'wisata-bill'
 
 class PrintFormat(str, Enum):
     HTML = "html"
