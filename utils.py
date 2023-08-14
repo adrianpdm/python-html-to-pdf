@@ -238,14 +238,11 @@ def flight_get_facilities_per_passenger(provider_booking_list, passenger_number)
                 if not baggage_fare_details:
                     continue
 
-                result.append(f"<div class='text-body-1 font-weight-medium'>{segment['origin']} - {segment['destination']}</div>")
+                result.append(f"<div class='text-body-1 font-weight-bold'>{segment['origin']} - {segment['destination']}</div>")
                 result.append(f"<div class='text-body-1'>{baggage_fare_details['detail_name']}</div>")
-        
-                result.append(f"{segment['origin']} - {segment['destination']}")
-                result.append(baggage_fare_details['detail_name'])
 
                 if extra_baggage_fee_data:
-                    result.append(f"<div class='text-body-1'>Extra baggage: <span class='font-weight-bold'>{extra_baggage_fee_data['fee_value']}</span></div>")
+                    result.append(f"<div class='text-body-1'>Extra baggage: <span class='font-weight-bold'>{extra_baggage_fee_data['fee_value']} KG</span></div>")
                 
                 if chargeable_seat_fee_data:
                     result.append(f"<div class='text-body-1'>Seat: <span class='font-weight-bold'>{chargeable_seat_fee_data['fee_value']}</span></div>")

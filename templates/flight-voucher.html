@@ -133,7 +133,7 @@
                             <span class="font-weight-bold">
                               {{ get_time_from_date(segment.departure_date) }}
                             </span>
-                            · {{ get_day_from_date(segment.departure_date) }}, {{ udf_pretty_date(segment.departure_date) }}
+                            · {{ get_day_from_date(segment.departure_date) }}, {{ udf_pretty_date(segment.departure_date, include_year=True) }}
                           </div>
                           <div>
                             {{ get(data.airportsMap, segment.origin, 'name') }}
@@ -147,7 +147,7 @@
                             <span class="font-weight-bold">
                               {{ get_time_from_date(segment.arrival_date) }}
                             </span>
-                            · {{ get_day_from_date(segment.arrival_date) }}, {{ udf_pretty_date(segment.arrival_date) }}
+                            · {{ get_day_from_date(segment.arrival_date) }}, {{ udf_pretty_date(segment.arrival_date, include_year=True) }}
                           </div>
                           <div>
                             {{ get(data.airportsMap, segment.destination, 'name') }}
