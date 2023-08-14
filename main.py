@@ -18,6 +18,7 @@ class PrintType(str, Enum):
     StayVoucher = 'stay-voucher'
     WisataBill = 'wisata-bill'
     PaymentTransactionsHistory = 'payment-transactions-history'
+    StayInvoice = 'stay-invoice'
 
 class PrintFormat(str, Enum):
     HTML = "html"
