@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link type="text/css" href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <style>
+    html {
+      font-size: 14px !important;
+    }
+ 
+    p {
+      margin: 0 !important;
+    }
+    table.table-bordered {
+      border-collapse: collapse;
+    }
+    table.table-bordered thead tr th {
+      border-top: 1px solid rgba(0,0,0,0.12);
+    }
+    table.table-bordered thead tr th:first-child {
+      border-left: 1px solid rgba(0,0,0,0.12);
+    }
+    table.table-bordered tbody tr td:first-child {
+      border-left: 1px solid rgba(0,0,0,0.12);
+    }
+    table.table-bordered th,
+    table.table-bordered td {
+      border-right: 1px solid rgba(0,0,0,0.12);
+      border-bottom: 1px solid rgba(0,0,0,0.12);
+    }
+    table.table-bordered th,
+    table.table-bordered td {
+      padding: 8px 16px;
+    }
+    .divider {
+      display: block;
+      border-top: 1px solid rgba(0,0,0,0.12);
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="v-application theme--light">
+    <div class="container text-body-1">
+      <section class="mb-2">
+        <p class="text-h5 font-weight-bold">
+          Flight Voucher
+        </p>
+      </section>
+
+      <section class="mb-8">
+        <table>
+          <tbody>
+            <tr class="pa-0" style="vertical-align: top;">
+              <td class="pa-0 pr-8">
+                <div class="mb-0 text-button text-uppercase" style="line-height: 1.25 !important; font-size: 10px;">
+                  Voucher ID
+                </div>
+                <div class="mb-0 text-body-1 font-weight-bold">
+                  {{ data.bookingId }}
+                </div>
+              </td>
+              <td class="pa-0 pr-8">
+                <div class="mb-0 text-button text-uppercase" style="line-height: 1.25 !important; font-size: 10px;">
+                  PNR
+                </div>
+                <div class="mb-0 text-body-1 font-weight-bold">
+                  {{ data.pnr }}
+                </div>
+              </td>
+              <td class="pa-0 pr-8">
+                <div class="text-button text-uppercase" style="line-height: 1.25 !important; font-size: 10px;">
+                  Itinerary ID
+                </div>
+                <div class="text-body-1 font-weight-bold">
+                  {{ data.order_number }}
+                </div>
+              </td>
+              <td class="pa-0 pr-8">
+                <div class="text-button text-uppercase" style="line-height: 1.25 !important; font-size: 10px;">
+                  Reserved For
+                </div>
+                <div class="text-body-1 font-weight-bold">
+                  {{ data.booker.name }}
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section class="mt-8">
+        <p class="mb-2 text-h6 font-weight-bold">
+          Flight Details
+          {% if data.direction == 'OW'%}
+            <span>| One Way</span>
+          {% elif data.direction == 'RT'%}
+            <span>| Round Trip</span>
+          {% endif %}
+        </p>
+        <div>
+          <table class="table-bordered" style="width: 100%;">
+            <tbody>
+              {% for item in data.provider_bookings %}
+                <tr>
+                  <td style="border-top: 1px solid rgba(0,0,0,0.12);">
+                    <div class="pr-2 d-flex align-center">
+                      <div
+                        class="theme--light v-sheet v-sheet--outlined d-flex justify-center align-center rounded-circle blue"
+                        style="width: 16px; height: 16px;"
+                      >
+                        <span class="white--text text-caption font-weight-medium">
+                          {{ item.sequence }}
+                        </span>
+                      </div>
+                      <div class="ml-3 text-body-1 font-weight-bold">
+                        {{ get(data.airportsMap, item.journeys.0.origin, 'city') }} - {{ get(data.airportsMap, item.journeys.0.destination, 'city') }}
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                
+                {% for segment in flight_get_all_segments_by_journey(item.journeys[0]) %}
+                  <tr style="vertical-align: top;">
+                    <td>
+                      <div class="row">
+                        <div class="col col-6 text-body-1">
+                          <div>
+                            <span class="font-weight-bold">
+                              {{ get_time_from_date(segment.departure_date) }}
+                            </span>
+                            · {{ get_day_from_date(segment.departure_date) }}, {{ udf_pretty_date(segment.departure_date) }}
+                          </div>
+                          <div>
+                            {{ get(data.airportsMap, segment.origin, 'name') }}
+                          </div>
+                          <div>
+                            {{ segment.carrier_name }} · {{ segment.carrier_code }} {{ segment.carrier_number }}
+                          </div>
+                        </div>
+                        <div class="col col-6 text-body-1">
+                          <div>
+                            <span class="font-weight-bold">
+                              {{ get_time_from_date(segment.arrival_date) }}
+                            </span>
+                            · {{ get_day_from_date(segment.arrival_date) }}, {{ udf_pretty_date(segment.arrival_date) }}
+                          </div>
+                          <div>
+                            {{ get(data.airportsMap, segment.destination, 'name') }}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                {% endfor %}
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="mt-8">
+        <p class="mb-2 text-h6 font-weight-bold">
+          Passenger Details
+        </p>
+        <table class="table-bordered" style="width: 100%;">
+          <thead>
+            <tr class="text-left text-overline text--secondary" style="vertical-align: top;">
+              <th>
+                No.
+              </th>
+              <th>
+                Name
+              </th>
+              <th>
+                Facilities
+              </th>
+              <th>
+                Ticket Number
+              </th>
+              <th class="text-right">
+                Price
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for passenger in data.passengers %}
+            <tr class="text-left" style="vertical-align: top; page-break-inside: avoid;">
+              <td>
+                <div
+                  class="theme--light v-sheet v-sheet--outlined d-flex justify-center align-center rounded-circle blue"
+                  style="width: 16px; height: 16px;"
+                >
+                  <span class="white--text text-caption font-weight-medium">
+                    {{loop.index}}
+                  </span>
+                </div>
+              </td>
+              <td>
+                {{ passenger.name }}
+              </td>
+              <td>
+                {{ flight_get_facilities_per_passenger(data.provider_bookings, passenger.passenger_number)|safe }}
+              </td>
+              <td>
+                {{ flight_get_ticket_number(data.provider_bookings, passenger.passenger_number) }}
+              </td>
+              <td class="text-right text-no-wrap">
+                {{ udf_format_currency(flight_get_total_fees_per_passenger(data.pnr, data.passengers, passenger.passenger_number)) }}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </section>
+
+      <section class="mt-8">
+        <p class="mb-2 text-h6 font-weight-bold">
+          Important Notes
+        </p>
+        <ul style="margin-left: -0.5em;">
+          <li>
+            <p>
+              Please arrive at the airport 90 minutes before domestic flight and 2 hours before international flight.
+            </p>
+          </li>
+          <li>
+            <p>
+              Passengers agree with Terms and Conditions of Carriage outlined by Carrier.
+            </p>
+          </li>
+        </ul>
+      </section>
+    </div>
+  </div>
+  <div class="v-application theme--light">
+    <div class="container">
+      <div class="text-body-2" style="width: 100%; padding-top: 96px;">
+        {% include 'footer.html' %}
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
