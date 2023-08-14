@@ -17,7 +17,7 @@ class PrintType(str, Enum):
     Debug = 'debug'
     StayVoucher = 'stay-voucher'
     WisataBill = 'wisata-bill'
-
+    OfflineBookingFlightInvoice = 'offline-booking-flight-invoice'
 class PrintFormat(str, Enum):
     HTML = "html"
     PDF = "pdf"
