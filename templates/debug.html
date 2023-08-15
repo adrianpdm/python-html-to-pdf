@@ -10,7 +10,11 @@
     Blank Page
   </h1>
   <code>
-    {{ context | safe }}
+    {{ {
+      'header': header,
+      'footer': footer,
+      'data': data
+    } }}
   </code>
 </body>
 </html>
