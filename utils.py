@@ -9,16 +9,32 @@ def udf_txn_booking_id(txn_data):
 """
 date value variants:
 1. YYYY-MM-DD, e.g 2023-01-01
-2. ISO timestamp. e.g 2023-07-04T03:06:28.125594+00:00
+2. Rodex timestamp, e.g 2023-01-01 23:59:59
+3. ISO timestamp. e.g 2023-07-04T03:06:28.125594+00:00
 """
 def udf_date_parse(date):
+    result = None
     try:
-        return datetime.strptime(date, '%Y-%m-%d')
-    except Exception as e:
-        if ('unconverted data remains' in str(e)):
-            return datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%f%z')
-        else:
-            raise e
+        result = datetime.strptime(date, '%Y-%m-%d')
+    except:
+        # silent error
+        pass
+    try:
+        result = datetime.strptime(date, '%Y-%m-%d %H:%M:%S')
+    except:
+        # silent error
+        pass
+    try:
+        result = datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%f%z')
+    except:
+        # silent error
+        pass
+
+    if (result == None):
+
+        raise ValueError('invalid date parser format')
+
+    return result
 
 
 """
@@ -165,3 +181,98 @@ def bill_sum_of_price_breakdown(price_breakdown_list, billing_period_start, bill
             continue
         total = total + item['amount']
     return total
+
+def get(obj, *args):
+    if obj == None:
+        return None
+    if len(args) == 0:
+        return obj
+    if len(args) == 1:
+        return obj[args[0]]
+    return get(obj[args[0]], *args[1:])
+
+def get_day_from_date(time_str):
+  date_obj = udf_date_parse(time_str)
+  return date_obj.strftime("%a")
+
+def get_time_from_date(time_str, is_include_seconds = False):
+    date_obj = udf_date_parse(time_str)
+    return date_obj.strftime("%H:%M:%S" if is_include_seconds else "%H:%M")
+
+def flight_get_all_segments_by_journey(journey):
+    segments = journey['segments']
+    result = []
+    for segment in segments:
+        legs = segment['legs']
+        for leg in legs:
+            result.append({
+                **leg,
+                'carrier_code': segment['carrier_code'],
+                'carrier_name': segment['carrier_name'],
+                'carrier_number': segment['carrier_number'],
+                'carrier_type_name': segment['carrier_type_name'],
+                'cabin_class': segment['cabin_class'],
+            })
+    return result
+
+def flight_get_facilities_per_passenger(provider_booking_list, passenger_number):
+    result = []
+    for booking in provider_booking_list:
+        for journey in booking['journeys']:
+            ticket = None
+            for t in booking['tickets']:
+                if int(t['passenger_number']) == int(passenger_number):
+                    ticket = t
+                    break
+                
+            for segment in journey['segments']:
+                extra_baggage_fee_data = None
+                chargeable_seat_fee_data = None
+                for fee in ticket['fees']:
+                    if fee['fee_type'] == 'SSR' and fee['fee_category'] == 'baggage' and (fee['journey_code'] == segment['segment_code'] or fee['journey_code'] == journey['journey_code']):
+                        extra_baggage_fee_data = fee
+                    if fee['fee_type'] == 'SEAT' and fee['journey_code'] == segment['segment_code']:
+                        chargeable_seat_fee_data = fee
+
+                baggage_fare_details = None
+                for fare_detail in segment['fare_details']:
+                    if fare_detail['detail_type'] == 'BGA':
+                        baggage_fare_details = fare_detail
+                        break
+
+                if not baggage_fare_details:
+                    continue
+
+                result.append(f"<div class='text-body-1 font-weight-bold'>{segment['origin']} - {segment['destination']}</div>")
+                result.append(f"<div class='text-body-1'>{baggage_fare_details['detail_name']}</div>")
+
+                if extra_baggage_fee_data:
+                    result.append(f"<div class='text-body-1'>Extra baggage: <span class='font-weight-bold'>{extra_baggage_fee_data['fee_value']} KG</span></div>")
+                
+                if chargeable_seat_fee_data:
+                    result.append(f"<div class='text-body-1'>Seat: <span class='font-weight-bold'>{chargeable_seat_fee_data['fee_value']}</span></div>")
+    return ''.join(result)
+
+def flight_get_ticket_number(providerBookingList, passengerNumber):
+    ticket = None
+    for booking in providerBookingList:
+        for t in booking['tickets']:
+            if int(t['passenger_number']) == int(passengerNumber):
+                ticket = t
+                break
+    return ticket['ticket_number'] if ticket else ''
+
+def flight_get_total_fees_per_passenger(pnr, passengerList, passengerNumber):
+    totalFees = 0
+    pnrList = pnr.split(',') if pnr else []
+    pnrList = [pnr.strip() for pnr in pnrList]
+    if not pnrList or not isinstance(pnrList, list):
+        return totalFees
+    passenger = next((p for p in passengerList if int(p['passenger_number']) == int(passengerNumber)), None)
+    for pnr in pnrList:
+        sale_service_charges = passenger['sale_service_charges'].get(pnr) if passenger else None
+        if sale_service_charges and isinstance(sale_service_charges, dict):
+            for charge in sale_service_charges.values():
+                if isinstance(charge['amount'], int) or isinstance(charge['amount'], float):
+                    totalFees += charge['amount']
+    return totalFees

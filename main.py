@@ -17,6 +17,7 @@ class PrintType(str, Enum):
     Debug = 'debug'
     StayVoucher = 'stay-voucher'
     WisataBill = 'wisata-bill'
+    FlightVoucher = 'flight-voucher'
     OfflineBookingCustomInvoice = 'offline-booking-custom-invoice'
     OfflineBookingFlightInvoice = 'offline-booking-flight-invoice'
     PaymentTransactionsHistory = 'payment-transactions-history'
