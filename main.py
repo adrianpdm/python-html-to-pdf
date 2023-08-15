@@ -4,7 +4,7 @@ import uvicorn
 from enum import Enum
 from fastapi import FastAPI, Request, Response, HTTPException, Body
 from fastapi.templating import Jinja2Templates
-# from playwright.sync_api import sync_playwright
+from playwright import async_api
 
 app = FastAPI()
 
@@ -50,6 +50,27 @@ async def handle_print(
                     'content-type': 'text/html',
                 }
             )
+        if (body.format == PrintFormat.PDF):
+            pdf_content = None
+            pdf_filename = body.filename if body.filename.endswith('.pdf') else f"{body.filename}.pdf"
+            async with async_api.async_playwright() as p:
+                browser = await p.chromium.launch(
+                    headless=True
+                )
+                page = await browser.new_page()
+                await page.set_content(html_content)
+                pdf_content = await page.pdf()
+                await browser.close()
+
+            if (pdf_content != None):
+                return Response(
+                    content=pdf_content,
+                    headers={
+                        'content-type': 'application/pdf',
+                        'content-disposition': 'Attachment',
+                        'filename': pdf_filename
+                    }
+                )
         raise TypeError('invalid format')
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
