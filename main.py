@@ -1,44 +1,59 @@
-from typing import Union, Dict
+from typing import Union, Dict, Optional
 from pydantic import BaseModel
 import uvicorn
+from enum import Enum
 from fastapi import FastAPI, Request, Response, HTTPException, Body
 from fastapi.templating import Jinja2Templates
-from playwright.sync_api import sync_playwright
+# from playwright.sync_api import sync_playwright
 
 app = FastAPI()
 
 templates = Jinja2Templates(directory="templates")
 
-def parse_html(request: Request, file_name: str, context: Dict):
-    return templates.TemplateResponse(name=file_name, context={ "request": request, **context })
+class PrintType(str, Enum):
+    Debug = 'debug'
 
-class Context(BaseModel):
-    context: Dict
+class PrintFormat(str, Enum):
+    HTML = "html"
+    PDF = "pdf"
 
-@app.post('/pdf')
-async def generate_pdf(
-   request: Request,
-   body: Dict = Body(...)
+class PrintPayload(BaseModel):
+    type: PrintType
+    format: PrintFormat
+    context: Dict = {}
+    filename: str
+
+@app.post("/print")
+async def handle_print(
+    request: Request,
+    body: PrintPayload = Body(...)
 ):
     try:
-      parsed_html = parse_html(request=request, file_name='index.html', context=body)
+        templates_dir = Jinja2Templates(directory='./templates')
+        template_file = templates_dir.get_template(name=f"{body.type}.html")
 
-      with sync_playwright() as playwright:
-        webkit = playwright.webkit
-        browser = webkit.launch()
-        context = browser.new_context()
-        page = context.new_page()
-        page.set_content(parsed_html.body)
+        # for debugging
+        context = body.context
+        if (body.type == PrintType.Debug):
+            context = { 'context': body.context }
 
-        pdf = page.pdf()
-        browser.close()
-
-        # Return API response with pdf type
-        return Response(content=pdf, media_type="application/pdf")
-
+        html_content = template_file.render({
+            'request': request,
+            'filename': body.filename,
+            **context,
+        })
+        
+        if (body.format == PrintFormat.HTML):
+            return Response(
+                content=html_content,
+                headers={
+                    'content-type': 'text/html',
+                }
+            )
+        raise TypeError('invalid format')
     except Exception as e:
-      raise HTTPException(status_code=500, detail=str(e))
-    
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="localhost", port=8000)
+    uvicorn.run('main:app', host="localhost", port=8000, reload=True)
