@@ -16,6 +16,13 @@ templates = Jinja2Templates(directory="templates")
 class PrintType(str, Enum):
     Debug = 'debug'
     StayVoucher = 'stay-voucher'
+    WisataBill = 'wisata-bill'
+    FlightVoucher = 'flight-voucher'
+    OfflineBookingCustomInvoice = 'offline-booking-custom-invoice'
+    OfflineBookingFlightInvoice = 'offline-booking-flight-invoice'
+    PaymentTransactionsHistory = 'payment-transactions-history'
+    StayInvoice = 'stay-invoice'
+    HotelVoucherVisaInvoice = 'hotel-voucher-visa-invoice'
 
 class PrintFormat(str, Enum):
     HTML = "html"
@@ -28,6 +35,7 @@ class PrintPayload(BaseModel):
     data: Dict = {}
     header: Dict = {}
     footer: Dict = {}
+    app_config: Dict = {}
 
 @app.post("/print")
 async def handle_print(
@@ -48,6 +56,7 @@ async def handle_print(
             'data': body.data,
             'header': body.header,
             'footer': body.footer,
+            'app_config': body.app_config,
         })
         
         if (body.format == PrintFormat.HTML):
@@ -69,7 +78,14 @@ async def handle_print(
                 )
                 page = await browser.new_page()
                 await page.set_content(html_content)
-                pdf_content = await page.pdf()
+                pdf_content = await page.pdf(
+                    margin={
+                        'top': '2cm',
+                        'right': '1cm',
+                        'bottom': '1cm',
+                        'left': '1cm',
+                    }
+                )
                 await browser.close()
 
             if (pdf_content != None):

@@ -1,0 +1,511 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
+  xmlns:o="urn:schemas-microsoft-com:office:office">
+
+<head>
+  <title>
+
+  </title>
+  <!--[if !mso]><!-->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!--<![endif]-->
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style type="text/css">
+    #outlook a {
+      padding: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+    }
+
+    table,
+    td {
+      border-collapse: collapse;
+      mso-table-lspace: 0pt;
+      mso-table-rspace: 0pt;
+    }
+
+    img {
+      border: 0;
+      height: auto;
+      line-height: 100%;
+      outline: none;
+      text-decoration: none;
+      -ms-interpolation-mode: bicubic;
+    }
+
+    p {
+      display: block;
+      margin: 13px 0;
+    }
+    footer p {
+      line-height: 1 !important;
+      margin: 0 !important;
+      font-family: Roboto, system-ui !important;
+    }
+  </style>
+  <!--[if mso]>
+    <noscript>
+    <xml>
+    <o:OfficeDocumentSettings>
+      <o:AllowPNG/>
+      <o:PixelsPerInch>96</o:PixelsPerInch>
+    </o:OfficeDocumentSettings>
+    </xml>
+    </noscript>
+    <![endif]-->
+  <!--[if lte mso 11]>
+    <style type="text/css">
+      .mj-outlook-group-fix { width:100% !important; }
+    </style>
+    <![endif]-->
+
+  <!--[if !mso]><!-->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet"
+    type="text/css">
+  <style type="text/css">
+    @import url(https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap);
+  </style>
+  <!--<![endif]-->
+
+
+
+  <style type="text/css">
+
+
+  </style>
+  <style type="text/css">
+    html {
+      scrollbar-width: none;
+      color: #121212;
+    }
+
+    html * {
+      font-size: 13px;
+      font-family: -apple-system, BlinkMacSystemFont, Roboto, system-ui, sans-serif;
+    }
+
+    ::-webkit-scrollbar {
+      display: none !important;
+    }
+
+    .body {
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
+
+    .page-title-and-logo {
+      margin-top: 24px;
+      margin-bottom: 12px;
+      position: relative;
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+    }
+
+    .header-logo {
+      max-width: 160px;
+      max-height: 72px;
+      object-fit: contain;
+      float: right;
+    }
+
+    table th,
+    table td {
+      vertical-align: top !important;
+    }
+
+    table.table-invoice-header {
+      line-height: 1.25;
+      width: auto !important;
+    }
+
+    table.table-invoice-order {
+      line-height: 1.5;
+      display: block !important;
+      width: 960px;
+    }
+
+    table.table-invoice-header thead tr th,
+    table.table-invoice-header tbody tr td {
+      padding: 0.25rem 1.5rem 0.25rem 0;
+    }
+
+    table.table-invoice-order thead tr th,
+    table.table-invoice-order tbody tr td {
+      padding: 0.5rem;
+    }
+
+    table.table-invoice-order thead tr th {
+      border-top: 2px solid #212121;
+      border-bottom: 2px solid #212121;
+    }
+
+    table.table-invoice-order thead tr th:first-child,
+    table.table-invoice-order tbody tr:first-child td:first-child {
+      xborder-left: 3px solid #212121;
+    }
+
+    table.table-invoice-order tbody tr:first-child td {
+      border-bottom: 3px solid #EAEAEA;
+    }
+
+    table.table-invoice-order thead tr th:last-child,
+    table.table-invoice-order tbody tr td:last-child {
+      xborder-right: 2px solid #212121;
+    }
+
+    table.table-invoice-order tbody tr:nth-child(n+2) td:first-child {
+      xborder-right: 3px solid #EAEAEA;
+    }
+
+    table.table-invoice-order tbody tr:nth-child(n+2) td:nth-child(n+3) {
+      border-bottom: 1px solid #EAEAEA;
+    }
+
+    table.table-invoice-order tbody tr:last-child td:nth-child(n+3) {
+      border-bottom: 2px solid #424242;
+    }
+
+    table td.border-b-0 {
+      border-bottom: none !important;
+    }
+
+    .text-no-wrap {
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .text-red {
+      color: #f44336;
+    }
+
+    .text-grey {
+      color: #b2b2b2;
+    }
+
+    .text-left {
+      text-align: left;
+    }
+
+    .text-right {
+      text-align: right;
+    }
+
+    .text--secondary {
+      color: #808080;
+    }
+
+    .text-h5 {
+      font-size: 1.375rem;
+    }
+
+    .text-h6 {
+      font-size: 1.25rem;
+    }
+
+    .text-h7 {
+      font-size: 1.125rem;
+    }
+
+    .font-weight-medium {
+      font-weight: 500 !important;
+    }
+
+    .font-weight-bold {
+      font-weight: 700 !important;
+    }
+
+    .price-breakdown-grid {
+      display: grid;
+      grid-template-columns: minmax(8ch, auto) minmax(8ch, auto) 1fr;
+      gap: 0 0.5rem;
+    }
+
+    .price-breakdown-grid>* {
+      line-height: 1.375 !important;
+      font-size: 12px !important;
+    }
+  </style>
+
+</head>
+
+<body style="word-spacing:normal;">
+
+
+  <div style>
+
+    <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+      <tbody>
+        <tr>
+          <td>
+
+
+            <!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:960px;" width="960" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+
+
+            <div style="margin:0px auto;max-width:960px;">
+
+              <table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation" style="width:100%;">
+                <tbody>
+                  <tr>
+                    <td style="direction:ltr;font-size:0px;padding:0px;text-align:left;">
+                      <!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><![endif]-->
+
+                      <div>
+                        <div class="page-title-and-logo">
+                          <div id="invoice-{{ data.booking_id }}" class="text-h5 font-weight-bold">
+                            Invoice
+                          </div>
+                          <img src="{{ header.logo_src }}" alt class="header-logo" style="position: absolute; right: 0;">
+                        </div>
+                        <table class="table-invoice-header">
+                          <tbody>
+                            <tr>
+                              <td>
+                                Number
+                              </td>
+                              <td style="padding-right: 0.5rem !important;">
+                                :
+                              </td>
+                              <td>
+                                {{ data.booking_id }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td class="text-no-wrap">
+                                Booking Date
+                              </td>
+                              <td style="padding-right: 0.5rem !important;">
+                                :
+                              </td>
+                              <td>
+                                {{ udf_pretty_date(data.created_date, null, true) }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td colspan="3" class="font-weight-bold">
+                                <div style="margin-top: 16px;">
+                                  BILL TO
+                                </div>
+                              </td>
+                              <td>
+                                <div style="min-width: 48px;"></div>
+                              </td>
+                              <td colspan="3" class="font-weight-bold">
+                                <div style="margin-top: 16px;">
+                                  TRAVELERS
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                Customer
+                              </td>
+                              <td style="padding-right: 0.5rem !important;">
+                                :
+                              </td>
+                              <td>
+                                {{ data.owner_data.name }}
+                              </td>
+                              <td></td>
+                              <td>
+                                Name
+                              </td>
+                              <td style="padding-right: 0.5rem !important;">
+                                :
+                              </td>
+                              <td rowspan="3">
+                                <div style="max-width: 320px;">
+                                  {{ data.guest_order_data.guest_data[0].full_name }}
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                Email
+                              </td>
+                              <td style="padding-right: 0.5rem !important;">
+                                :
+                              </td>
+                              <td>
+                                {% if data.owner_data.email %}
+                                {{ data.owner_data.email }}
+                                {% else %}
+                                -
+                                {% endif %}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                Phone
+                              </td>
+                              <td style="padding-right: 0.5rem !important;">
+                                :
+                              </td>
+                              <td>
+                                {% if data.owner_data.phone %}
+                                {{ data.owner_data.phone }}
+                                {% else %}
+                                -
+                                {% endif %}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                        <div class="font-weight-bold" style="margin-top: 24px; margin-bottom: 0.75em;">
+                          ORDER DETAILS
+                        </div>
+                        <table class="table-invoice-order" style="width: 100%;">
+                          <thead>
+                            <tr>
+                              <th class="font-weight-bold text-left">
+                                Accomodation
+                              </th>
+                              <th class="font-weight-bold text-right">
+                                Quantity
+                              </th>
+                              <th class="font-weight-bold text-left" style="width: 1%;">
+                                Details
+                              </th>
+                              <th class="font-weight-bold text-right" style="width: 1%; min-width: 120px;">
+                                Subtotal (Rp)
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>
+                                <div style="line-height: 1.5;">
+                                  {{ data.product_data.name_1 }}
+                                </div>
+                                <div style="line-height: 1.5;">
+                                  {{ udf_pretty_date(data.dates_data.start_date, data.dates_data.end_date, true) }}
+                                </div>
+                                <div style="line-height: 1.5;">
+                                  <span>
+                                    {{ data.product_data.name_2 }}
+                                  </span>
+                                </div>
+                              </td>
+                              <td class="text-right">
+                                {{ data.quantity }}
+                              </td>
+                              <td>
+                                <div class="text--secondary">
+                                  -
+                                </div>
+                              </td>
+                              <td class="monospace text-right font-weight-bold"
+                                style="font-family: Courier, monospace;">
+                                {{ udf_format_currency(data.draft_price, 'skip') }}
+                              </td>
+                            </tr>
+
+                            {% for pb in data.price_breakdown %}
+                            {% if pb.type_code != 'BO' %}
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              {% if pb.type == 'CBX' and pb.amount > 0 %}
+                              <td class="text-red">
+                                {% elif pb.type == 'CCL' %}
+                              </td>
+                              <td class="text-red">
+                                {% elif pb.type == 'RFND' %}
+                              </td>
+                              <td class="text-red">
+                                {% else %}
+                              </td>
+                              <td>
+                                {% endif %}
+                                <div style="min-width: 200px;">
+                                  {{ pb.type_description }} {{ ('(' + pb.note + ')') if pb.note else '' }}
+                                  {% if pb.type in ['CCL', 'RFND', 'ADJ'] %}
+                                  <span style="display: inline-block;">
+                                    (on {{ udf_pretty_date(pb.txn_dt, null, true) }})
+                                  </span>
+                                  {% endif %}
+                                </div>
+                              </td>
+
+                              {% if pb.type == 'CBX' and pb.amount > 0 %}
+                              <td class="monospace text-right text-red font-weight-bold"
+                                style="font-family: Courier, monospace;">
+                                {% elif pb.type == 'CCL' %}
+                              </td>
+                              <td class="monospace text-right text-red font-weight-bold"
+                                style="font-family: Courier, monospace;">
+                                {% elif pb.type == 'RFND' %}
+                              </td>
+                              <td class="monospace text-right text-red font-weight-bold"
+                                style="font-family: Courier, monospace;">
+                                {% else %}
+                              </td>
+                              <td class="monospace text-right font-weight-bold"
+                                style="font-family: Courier, monospace;">
+                                {% endif %}
+                                {{ udf_format_currency(pb.amount, 'skip') }}
+                              </td>
+                            </tr>
+                            {% endif %}
+                            {% endfor %}
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td class="font-weight-bold">
+                                Total
+                              </td>
+                              <td class="monospace text-right font-weight-bold"
+                                style="font-family: Courier, monospace;">
+                                {{ udf_format_currency(data.final_price) }}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
+                      <!--[if mso | IE]></table><![endif]-->
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+            </div>
+
+
+            <!--[if mso | IE]></td></tr></table><![endif]-->
+
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  {% if (app_config.app.tenant_name == 'wisatajawa') and (data.paymentMethod == 'BILL') %}
+  <div style="margin-top: 32px;"></div>
+  <div class="roboto">
+    <div style="line-height: 1.5; font-size: 14px; font-family: Roboto, system-ui;">
+      Rekening BCA<br>
+      AN. PT WISATA JAWA INDAH<br>
+      AC. 1035599888
+    </div>
+  </div>
+  {% endif %}
+  {% if (app_config.app.tenant_name == 'wisatajawa') and (footer.show_download_app) %}
+  <div style="padding-top: 100px;">
+  </div>
+  {% include 'footer.html' %}
+  {% endif %}
+
+</body>
+
+</html>

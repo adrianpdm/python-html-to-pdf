@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link type="text/css" href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <style>
+    html {
+      font-size: 14px !important;
+    }
+
+    p {
+      margin: 0 !important;
+    }
+
+    .text-break-all {
+      word-break: break-all;
+    }
+
+    .table-query td:nth-child(2)::before {
+      content: ':';
+      margin: 0 1em;
+    }
+
+    .table-history {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid #eee;
+    }
+
+    .table-history th,
+    .table-history td {
+      padding: 1em;
+      vertical-align: top;
+      background-color: white;
+    }
+
+    .table-history thead th,
+    .table-history thead td {
+      padding: 0.5em 1em;
+    }
+
+    .table-history tbody th,
+    .table-history tbody td {
+      border-top: 1px solid #eee;
+    }
+
+    .txn-items {
+      display: grid;
+      grid-template-columns: 2fr 2fr 6fr;
+      gap: 2rem;
+    }
+
+    img.header-logo {
+      max-height: 72px;
+      max-width: 160px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="v-application theme--light">
+    <div class="container text-body-2">
+      <header>
+        <p class="d-flex align-center mb-4 text-h5">
+          <strong>Transactions History - {{ data.query.year_month }}</strong>
+          <i class="spacer"></i>
+          {% if header and header.logo_src %}
+          <img
+            src="{{ header.logo_src }}"
+            class="header-logo"
+          >
+          {% endif %}
+        </p>
+
+        <p class="text-h6">
+          <strong>{{ data.query.customer_name }}</strong>
+        </p>
+        <table class="table-query">
+          <tbody>
+            <tr>
+              <td>Payment</td>
+              <td>
+                <strong>{{ data.query.method_name }}</strong>
+              </td>
+            </tr>
+            <tr>
+              <td>Transaction Type</td>
+              <td>
+                <strong style="text-transform: uppercase;">
+                  {{ data.query.txn_type }}
+                </strong>
+              </td>
+            </tr>
+            <tr>
+              <td>Total</td>
+              <td>
+                <strong>{{ data['items']|length }} transaction(s)</strong>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </header>
+
+      <main>
+        <table class="table-history mt-4 text-left">
+          <thead>
+            <tr>
+              <th>No</th>
+              <th colspan="2">Transaction</th>
+              <th class="text-right">Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in data['items'] %}
+              <tr>
+                <td class="text-left">
+                  {{ loop.index }}
+                </td>
+                <td>
+                  <strong>{{ item.txn_data.txn_title }}</strong>
+                  <br>
+                  <span class="text-no-wrap text-caption">
+                    {{ udf_pretty_date(item.txn_date, include_year=True) }}
+                  </span>
+                </td>
+                <td>
+                  <p>
+                    {% if udf_txn_booking_id(item.txn_data) != None %}
+                      Booking ID {{ udf_txn_booking_id(item.txn_data) }}
+                    {% else %}
+                      {{ item.txn_data.txn_subtitle }}
+                    {% endif %}
+                  </p>
+                  <p class="text-caption text--disabled">
+                    {{ item.txn_data.txn_description }}
+                  </p>
+
+                  {% for txn_item in item.txn_data.txn_items %}
+                  <div class="txn-items mt-4 text-caption">
+                    <span>
+                      {{ txn_item.type_description }}
+                    </span>
+                    <span class="text-no-wrap">
+                      {{ udf_format_currency(txn_item.txn_item_amount) }}
+                    </span>
+                    <p class="text-break-all">
+                      {{ txn_item.note }}
+                    </p>
+                  </div>
+                  {% endfor %}
+
+                </td>
+                <td
+                  class="text-no-wrap text-right"
+                >
+                  <strong>
+                    {{ udf_format_currency(item.amount) }}
+                  </strong>
+                  <br>
+                  <span class="text-caption text--disabled">
+                    {{ udf_format_currency(item.rolling_amount) }}
+                  </span>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </main>
+    </div>
+  </div>
+
+</body>
+
+</html>
