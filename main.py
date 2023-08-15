@@ -20,6 +20,8 @@ class PrintType(str, Enum):
     OfflineBookingCustomInvoice = 'offline-booking-custom-invoice'
     OfflineBookingFlightInvoice = 'offline-booking-flight-invoice'
     PaymentTransactionsHistory = 'payment-transactions-history'
+    StayInvoice = 'stay-invoice'
+
 class PrintFormat(str, Enum):
     HTML = "html"
     PDF = "pdf"
@@ -31,6 +33,7 @@ class PrintPayload(BaseModel):
     data: Dict = {}
     header: Dict = {}
     footer: Dict = {}
+    app_config: Dict = {}
 
 @app.post("/print")
 async def handle_print(
@@ -51,6 +54,7 @@ async def handle_print(
             'data': body.data,
             'header': body.header,
             'footer': body.footer,
+            'app_config': body.app_config,
         })
         
         if (body.format == PrintFormat.HTML):
