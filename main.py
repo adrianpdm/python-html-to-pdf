@@ -21,6 +21,7 @@ class PrintType(str, Enum):
     OfflineBookingFlightInvoice = 'offline-booking-flight-invoice'
     PaymentTransactionsHistory = 'payment-transactions-history'
     StayInvoice = 'stay-invoice'
+    HotelVoucherVisaInvoice = 'hotel-voucher-visa-invoice'
 
 class PrintFormat(str, Enum):
     HTML = "html"
