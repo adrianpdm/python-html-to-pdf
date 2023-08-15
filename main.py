@@ -18,6 +18,7 @@ class PrintType(str, Enum):
     StayVoucher = 'stay-voucher'
     WisataBill = 'wisata-bill'
     OfflineBookingFlightInvoice = 'offline-booking-flight-invoice'
+    PaymentTransactionsHistory = 'payment-transactions-history'
 class PrintFormat(str, Enum):
     HTML = "html"
     PDF = "pdf"

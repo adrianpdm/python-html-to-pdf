@@ -1,6 +1,11 @@
 from datetime import datetime
 import re
 
+def udf_txn_booking_id(txn_data):
+    if (txn_data['txn_subtitle'] and txn_data['txn_subtitle'].startswith('Booking #')):
+        return txn_data['txn_subtitle'].replace('Booking #', '')
+    return None   
+
 """
 date value variants:
 1. YYYY-MM-DD, e.g 2023-01-01
