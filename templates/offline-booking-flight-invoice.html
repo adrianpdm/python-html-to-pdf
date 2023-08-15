@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link type="text/css" href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+  <style>
+    html {
+      font-size: 14px !important;
+    }
+
+    p {
+      margin: 0 !important;
+    }
+
+    .header-grid {
+      display: grid;
+      grid-template-columns: auto auto 1fr;
+      gap: 0 1rem;
+    }
+
+    .table-invoice {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid;
+    }
+
+    .table-invoice th,
+    .table-invoice td {
+      padding: 0.5em 1em;
+      background-color: white;
+    }
+
+    .table-invoice tbody th,
+    .table-invoice tbody td {
+      border-top: 1px solid;
+      border-color: inherit;
+    }
+
+    .table-invoice tbody tr:last-child td {
+      border-bottom: 1px solid;
+      border-color: inherit;
+    }
+
+    img.header-logo {
+      max-height: 72px;
+      max-width: 160px;
+    }
+
+    footer {
+      margin-top: 100px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="v-application theme--light">
+    <div class="container text-body-2">
+      <header>
+        <div class="d-flex justify-space-between">
+          <div>
+            <p class="text-h6">
+              <strong>Invoice #{{ data.booking_id }}</strong>
+            </p>
+            {% if data.issue_data and data.issue_data.issue_id %}
+            <div>
+              {{ data.issue_data.subject }} ({{ data.issue_data.status }})
+            </div>
+            {% endif %}
+            <div class="mt-4 header-grid">
+              <div>Tanggal Invoice</div>
+              <span>:</span>
+              <p><strong>{{udf_pretty_date(data.created_date, include_year=True)}}</strong></p>
+
+              <div>Jatuh Tempo</div>
+              <span>:</span>
+              <p><strong>{{udf_pretty_date(data.created_date, include_year=True)}}</strong></p>
+
+              <div>Pembayaran</div>
+              <span>:</span>
+              <p><strong>CREDIT</strong></p>
+            </div>
+          </div>
+          <div class="text-right">
+            {% if header and header.logo_src %}
+            <img
+              src="{{ header.logo_src }}"
+              class="header-logo"
+            >
+            {% endif %}
+          </div>
+        </div>
+      </header>
+
+      <main class="mt-8">
+        <div class="font-weight-bold">
+          CUSTOMER: {{ data.on_behalf_user_account_name }}
+        </div>
+
+        <table class="table-invoice grey lighten-2 mt-2">
+          <thead>
+            <tr class="text-left">
+              <th class="text-right">No</th>
+              <th>Ticket Number</th>
+              <th>Nama Pax</th>
+              <th>Keterangan</th>
+              <th class="text-right">Jumlah IDR</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order_data in data.guest_order_data.order_data %}
+            <tr>
+              <td class="text-right">{{loop.index}}</td>
+              <td>{{order_data.ticket_no}}</td>
+              <td>{{order_data.pax}}</td>
+              <td class="text-no-wrap">{{order_data.route_schedule}}</td>
+              <td class="text-right text-no-wrap">{{udf_format_currency(order_data.price)}}</td>
+            </tr>
+            {% endfor %}
+
+            {% for price_data in data.price_breakdown %}
+            <tr>
+              {% if price_data.type_code != 'BO' %}
+              <td colspan="3"></td>
+              <td>
+                {{price_data.type_description}} {{price_data.note}}
+              </td>
+              <td class="text-right text-no-wrap">{{udf_format_currency(price_data.amount)}}</td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+            <tr class="font-weight-bold">
+              <td colspan="3"></td>
+              <td>Totals</td>
+              <td class="text-right text-no-wrap">{{udf_format_currency(data.final_price)}}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="d-flex align-end mt-8" style="page-break-inside: avoid; break-inside: avoid;">
+          <p>
+            Rekening BCA<br>
+            AN. PT WISATA JAWA INDAH<br>
+            AC. 829.090.8770
+          </p>
+          <i class="spacer"></i>
+          <div class="mr-6">
+            {{data.created_by}}
+          </div>
+          <div class="mr-6 text-center">
+            <p class="mb-12">Diterima oleh,</p>
+            <span>(______________)</span>
+          </div>
+          <div class="mr-6 text-center">
+            <p class="mb-12">Disetujui oleh,</p>
+            <span>(______________)</span>
+          </div>
+        </div>
+      </main>
+
+      {% include 'footer.html' %}
+    </div>
+  </div>
+
+</body>
+
+</html>
